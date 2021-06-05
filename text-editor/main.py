@@ -7,6 +7,7 @@ win.title("Bhola editor")
 menubar.menu(win)
 text = tkinter.Text(win)
 text.grid()
+text.focus_set()
 
 
 def save_as():
