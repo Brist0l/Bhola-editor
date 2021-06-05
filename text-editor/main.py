@@ -12,10 +12,13 @@ text.grid()
 def save_as():
     global text
     t = text.get("1.0", "end-1c")
-    save_location = tkinter.filedialog.askopenfilename()
+    save_location = tkinter.filedialog.asksaveasfile()
     file1 = open(save_location, "w+")
     file1.write(t)
     file1.close()
 
+
+button = tkinter.Button(win, text="Save",command=save_as)
+button.grid()
 
 win.mainloop()
