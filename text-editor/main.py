@@ -18,6 +18,4 @@ def save_as():
     file1.close()
 
 
-button = tkinter.Button(win, text="Save", command=save_as)
-button.grid()
 win.mainloop()

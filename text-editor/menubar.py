@@ -1,5 +1,6 @@
 import tkinter
-
+import menubaroptions
+# import main
 
 def menu(win):
     menu_ = tkinter.Menu(win)
@@ -8,8 +9,8 @@ def menu(win):
         file_ = tkinter.Menu(menu_, tearoff=0)
         menu_.add_cascade(label="File", menu=file_)
         file_.add_command(label='New File', command=None)
-        file_.add_command(label='Open...', command=None)
-        file_.add_command(label='Save', command=None)
+        file_.add_command(label='Open...', command=menubaroptions._open)
+        file_.add_command(label='Save', command=menubaroptions._main(win))
         file_.add_separator()
         file_.add_command(label='Exit', command=win.destroy)
 
