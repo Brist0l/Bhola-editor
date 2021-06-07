@@ -3,8 +3,8 @@ import menubaroptions
 from functools import partial
 import emoji
 import Setting
+import pip
 
-# import main
 
 def menu(win):
     menu_ = tkinter.Menu(win)
@@ -14,7 +14,7 @@ def menu(win):
         menu_.add_cascade(label="File", menu=file_)
         file_.add_command(label=emoji.emojize(':page_facing_up: New File'), command=None)
         file_.add_command(label=emoji.emojize(':open_mailbox_with_lowered_flag: Open'), command=menubaroptions._open)
-        file_.add_command(label=emoji.emojize(':gear:Setting'),command=Setting.run)
+        file_.add_command(label=emoji.emojize(':gear:Setting'), command=Setting.run)
         file_.add_separator()
         file_.add_command(label='Exit', command=win.destroy)
 
@@ -35,8 +35,13 @@ def menu(win):
         menu_.add_cascade(label='Help', menu=help_)
         help_.add_command(label='About This editor', command=menubaroptions._about)
 
+    def _tools():
+        tools_ = tkinter.Menu(menu_, tearoff=0)
+        menu_.add_cascade(label="Tools", menu=tools_)
+        tools_.add_command(label="Install package", command=pip.run)
 
     file()
     edit()
     _help()
+    _tools()
     win.config(menu=menu_)

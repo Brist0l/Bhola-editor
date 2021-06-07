@@ -29,8 +29,10 @@ def _copy():
 
 def _cut():
     keyboard.press_and_release('ctrl+x')
+
+
 def _about():
-    webbrowser.open("https://github.com/mrHola21/Text-Editor",new=2)
+    webbrowser.open("https://github.com/mrHola21/Bhola-editor", new=2)
 
 # def _find(win,text):
 #     search_list = list()
