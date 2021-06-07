@@ -26,11 +26,12 @@ def run():
 
     def install(event):
         global module
-        if module == " ":
-            tkinter.Label(text="pls provide a name!!", font=font, fg="red").pack()
-
+        module = module_name.get()
+        if module == "":
+            error_label = tkinter.Label(pipwin, text="pls provide a name!!", font=font, fg="red")
+            error_label.pack()
+            error_label.after(3000, error_label.destroy)
         else:
-            module = module_name.get()
             x = subprocess.run(f'pip install {module}', shell=True, capture_output=True)
             if "Requirement already satisfied".lower() in str(x).lower():
                 confirm_label = tkinter.Label(pipwin, text=f"{str(module)} is already present", font=font, fg="green")
@@ -61,18 +62,22 @@ def run():
             confirm_label.pack()
             confirm_label.after(3000, confirm_label.destroy)
 
+    def destroy(event):
+        pipwin.destroy()
+
     pipwin = tkinter.Tk()
     pipwin.focus_set()
+    pipwin.resizable(0, 0)
     module_name = tkinter.StringVar()
     tkinter.Label(pipwin, text=sys_os, fg=label_colour, font=font).pack()
     module_name = tkinter.Entry(pipwin, fg=label_colour, font=font, textvariable=module_name)
-    module_name.focus_set()
     module_name.pack()
+    module_name.focus_set()
+
     # adding keyboard bindings
     pipwin.bind("<Return>", install)
     pipwin.bind("<Shift-Return>", upgrade)
-    # the main thi
+    pipwin.bind("<Escape>", destroy)
+
+    # the main thing
     pipwin.mainloop()
-
-
-run()
