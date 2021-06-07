@@ -6,6 +6,7 @@ import Setting
 import pip
 
 
+
 def menu(win):
     menu_ = tkinter.Menu(win)
 
@@ -15,6 +16,7 @@ def menu(win):
         file_.add_command(label=emoji.emojize(':page_facing_up: New File'), command=None)
         file_.add_command(label=emoji.emojize(':open_mailbox_with_lowered_flag: Open'), command=menubaroptions._open)
         file_.add_command(label=emoji.emojize(':gear:Setting'), command=Setting.run)
+        # file_.add_command(label="Save", command=save_as)
         file_.add_separator()
         file_.add_command(label='Exit', command=win.destroy)
 

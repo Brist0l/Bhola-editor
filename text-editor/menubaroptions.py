@@ -3,7 +3,6 @@ from tkinter import *
 import keyboard
 from tkinter import messagebox as MessageBox
 import webbrowser
-
 from functools import partial
 
 
