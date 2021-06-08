@@ -15,7 +15,7 @@ def run():
 
     # checking the OS
     if sys.platform.startswith('linux'):
-        sys_os = "Linux"
+        sys_os = "Linux , u are a cool guy "
         label_colour = "green"
     elif sys.platform.startswith("win"):
         sys_os = "Windows"
@@ -66,8 +66,11 @@ def run():
         pipwin.destroy()
 
     pipwin = tkinter.Tk()
+    # icon = tkinter.PhotoImage(file="Imgs/pip_ico.png")
+    # pipwin.iconphoto(False, icon)
     pipwin.focus_set()
     pipwin.resizable(0, 0)
+
     module_name = tkinter.StringVar()
     tkinter.Label(pipwin, text=sys_os, fg=label_colour, font=font).pack()
     module_name = tkinter.Entry(pipwin, fg=label_colour, font=font, textvariable=module_name)
