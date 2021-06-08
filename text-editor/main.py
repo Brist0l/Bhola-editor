@@ -2,15 +2,24 @@ import tkinter
 import tkinter.filedialog
 import menubar
 import sidebar
+from menubaroptions import contents
+import hierarchical
 
+# creating the main window
 win = tkinter.Tk("Bhola editor")
+
+# setting the max size
+# win.maxsize(win.winfo_screenheight(), win.winfo_screenwidth())
+
+# setting the min size
+win.minsize(500, 500)
 
 # specifying the title
 win.title("Bhola editor")
 
 # declaring an icon
 icon = tkinter.PhotoImage(file="Imgs/main_ico.png")
-sidebar.run(win=win)
+sidebar.show()
 # setting the icon img as the icon
 win.iconphoto(True, icon)
 # adding the menu
@@ -35,8 +44,34 @@ def save_as(event):
         pass
 
 
+def _open_file(event):
+    global file
+    file = tkinter.filedialog.askopenfilename()
+    if file == "":
+        file = None
+    else:
+        text.delete(1.0, tkinter.END)
+        with open(file, "r+") as f:
+            text.insert(1.0, f.read())
+
+
+def _open_folder(event):
+    hierarchical.run()
+
+
+text.insert(tkinter.INSERT, contents)
+
+Scroll = tkinter.Scrollbar(text)
+Scroll.pack(side=tkinter.RIGHT, fill=tkinter.Y)
+Scroll.config(command=text.yview)
+text.config(yscrollcommand=Scroll.set)
+
+
 # adding keybindings
 win.bind("<Control-s>", save_as)
+win.bind("<Control-o>", _open_file)
+win.bind("<Control-Shift-O>", _open_folder)
+
 
 # the main thing
 win.mainloop()

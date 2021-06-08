@@ -5,9 +5,11 @@ from tkinter import messagebox as MessageBox
 import webbrowser
 from functools import partial
 
+contents = ""
+
 
 def _open():
-    filedialog.askopenfilename()
+    keyboard.press_and_release("ctrl+o")
 
 
 def _new():
