@@ -13,7 +13,7 @@ def run():
     tv.configure(yscroll=ybar.set)
     # print(path_)
     directory = str(path_)
-    tv.heading('#0', text='Dir：' + directory, anchor='w')
+    tv.heading('#0', text=directory)
     path = os.path.abspath(directory)
     node = tv.insert('', 'end', text=path, open=True)
 
