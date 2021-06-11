@@ -2,7 +2,6 @@ import tkinter
 import tkinter.filedialog
 import menubar
 import sidebar
-from menubaroptions import contents
 import hierarchical
 import tkinter.font
 
@@ -14,7 +13,7 @@ win = tkinter.Tk()
 
 # setting the min size
 win.minsize(500, 500)
-
+e = tkinter.StringVar()
 # specifying the title
 win.title("Bhola editor")
 
@@ -76,7 +75,25 @@ def change_font_size(event):
             font.configure(size=fontsize + 1)
 
 
-text.insert(tkinter.INSERT, contents)
+def on_find(event):
+    def find(event):
+        text.tag_remove('found', '1.0', tkinter.END)
+        s = e.get()
+        if s:
+            idx = '1.0'
+            while 1:
+                idx = text.search(s, idx, nocase=1,
+                                  stopindex=tkinter.END)
+                if not idx: break
+                lastidx = '%s+%dc' % (idx, len(s))
+                text.tag_add('found', idx, lastidx)
+                idx = lastidx
+        text.tag_config('found', foreground='red')
+
+    find_Win = tkinter.Toplevel(win)
+    tkinter.Entry(find_Win, textvariable=e).pack(side=tkinter.LEFT)
+    find_Win.bind("<Return>", find)
+
 
 Scroll = tkinter.Scrollbar(text)
 Scroll.pack(side=tkinter.RIGHT, fill=tkinter.Y)
@@ -88,6 +105,7 @@ win.bind("<Control-s>", save_as)
 win.bind("<Control-o>", _open_file)
 win.bind("<Control-Shift-O>", _open_folder)
 win.bind("<Control-MouseWheel>", change_font_size)
+win.bind("<Control-f>", on_find)
 
 # the main thing
 win.mainloop()

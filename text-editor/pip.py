@@ -68,7 +68,6 @@ def run():
     pipwin = tkinter.Tk()
     # icon = tkinter.PhotoImage(file="Imgs/pip_ico.png")
     # pipwin.iconphoto(False, icon)
-    pipwin.focus_set()
     pipwin.resizable(0, 0)
 
     module_name = tkinter.StringVar()

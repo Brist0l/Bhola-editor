@@ -12,6 +12,10 @@ def _open():
     keyboard.press_and_release("ctrl+o")
 
 
+def _save():
+    keyboard.press_and_release("ctrl+s")
+
+
 def _new():
     pass
 
