@@ -7,7 +7,9 @@ import tkinter.font
 
 # creating the main window
 win = tkinter.Tk()
-
+# font
+font = tkinter.font.Font(family="Arial",
+                         size=12)
 # setting the max size
 # win.maxsize(win.winfo_screenheight(), win.winfo_screenwidth())
 
@@ -16,7 +18,7 @@ win.minsize(500, 500)
 
 # for the find
 e = tkinter.StringVar()
-x = tkinter.Entry(textvariable=e)
+x = tkinter.Entry(textvariable=e, font=font)
 
 # specifying the title
 win.title("Bhola editor")
@@ -29,8 +31,6 @@ win.iconphoto(True, icon)
 # adding the menu
 menubar.menu(win)
 
-font = tkinter.font.Font(family="Arial",
-                         size=12)
 # adding the main writing space
 text = tkinter.Text(win, font=font)
 text.pack(expand=True, side=tkinter.TOP, fill=tkinter.BOTH)
@@ -98,9 +98,13 @@ def on_find(event):
         text.tag_config('found', foreground='red')
         text.after(1000, change)
 
+    def destroy(event):
+        x.destroy()
+
     x.pack(side=tkinter.LEFT)
     x.focus_set()
     x.bind("<Return>", find)
+    x.bind("<Delete>", destroy)
 
 
 Scroll = tkinter.Scrollbar(text)
