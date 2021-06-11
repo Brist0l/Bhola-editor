@@ -13,7 +13,11 @@ win = tkinter.Tk()
 
 # setting the min size
 win.minsize(500, 500)
+
+# for the find
 e = tkinter.StringVar()
+x = tkinter.Entry(textvariable=e)
+
 # specifying the title
 win.title("Bhola editor")
 
@@ -77,6 +81,9 @@ def change_font_size(event):
 
 def on_find(event):
     def find(event):
+        def change():
+            text.tag_config('found', foreground='black')
+
         text.tag_remove('found', '1.0', tkinter.END)
         s = e.get()
         if s:
@@ -89,10 +96,11 @@ def on_find(event):
                 text.tag_add('found', idx, lastidx)
                 idx = lastidx
         text.tag_config('found', foreground='red')
+        text.after(1000, change)
 
-    find_Win = tkinter.Toplevel(win)
-    tkinter.Entry(find_Win, textvariable=e).pack(side=tkinter.LEFT)
-    find_Win.bind("<Return>", find)
+    x.pack(side=tkinter.LEFT)
+    x.focus_set()
+    x.bind("<Return>", find)
 
 
 Scroll = tkinter.Scrollbar(text)
