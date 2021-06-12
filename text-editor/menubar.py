@@ -1,7 +1,5 @@
 import tkinter
 import menubaroptions
-from functools import partial
-import emoji
 import Setting
 import pip
 

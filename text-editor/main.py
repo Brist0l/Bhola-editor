@@ -5,20 +5,26 @@ import sidebar
 import hierarchical
 import tkinter.font
 
+BACKGROUND = "#333333"
+FOREGROUND = "#E9F0F2"
+
 # creating the main window
 win = tkinter.Tk()
 # font
 font = tkinter.font.Font(family="Arial",
                          size=12)
 # setting the max size
-# win.maxsize(win.winfo_screenheight(), win.winfo_screenwidth())
+win.maxsize(win.winfo_screenheight(), win.winfo_screenwidth())
 
 # setting the min size
 win.minsize(500, 500)
 
 # for the find
+find_font = tkinter.font.Font(family="Arial",
+                              size=12)
 e = tkinter.StringVar()
-x = tkinter.Entry(textvariable=e, font=font)
+x = tkinter.Entry(textvariable=e, font=find_font)
+y = tkinter.Label(text="Find")
 
 # specifying the title
 win.title("Bhola editor")
@@ -32,7 +38,7 @@ win.iconphoto(True, icon)
 menubar.menu(win)
 
 # adding the main writing space
-text = tkinter.Text(win, font=font)
+text = tkinter.Text(win, font=font, bg=BACKGROUND, fg=FOREGROUND, insertbackground=FOREGROUND)
 text.pack(expand=True, side=tkinter.TOP, fill=tkinter.BOTH)
 text.focus_set()  # sets the cursor at the writing space
 
@@ -82,7 +88,7 @@ def change_font_size(event):
 def on_find(event):
     def find(event):
         def change():
-            text.tag_config('found', foreground='black')
+            text.tag_config('found', foreground=FOREGROUND)
 
         text.tag_remove('found', '1.0', tkinter.END)
         s = e.get()
@@ -99,12 +105,14 @@ def on_find(event):
         text.after(1000, change)
 
     def destroy(event):
+        y.destroy()
         x.destroy()
 
-    x.pack(side=tkinter.LEFT)
+    y.pack(side=tkinter.LEFT, anchor="sw")
+    x.pack(side=tkinter.LEFT, anchor="sw")
     x.focus_set()
     x.bind("<Return>", find)
-    x.bind("<Delete>", destroy)
+    x.bind("<Escape>", destroy)
 
 
 Scroll = tkinter.Scrollbar(text)
@@ -116,6 +124,8 @@ text.config(yscrollcommand=Scroll.set)
 win.bind("<Control-s>", save_as)
 win.bind("<Control-o>", _open_file)
 win.bind("<Control-Shift-O>", _open_folder)
+win.bind("<Button-4>", change_font_size)
+win.bind("<Button-5>", change_font_size)
 win.bind("<Control-MouseWheel>", change_font_size)
 win.bind("<Control-f>", on_find)
 
