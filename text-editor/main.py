@@ -4,15 +4,19 @@ import menubar
 import sidebar
 import hierarchical
 import tkinter.font
+import sys
 
+# static variables
 BACKGROUND = "#333333"
 FOREGROUND = "#E9F0F2"
+ENG_WORDS = open("american-english").read().split("\n")
 
 # creating the main window
 win = tkinter.Tk()
+
 # font
-font = tkinter.font.Font(family="Arial",
-                         size=12)
+font = tkinter.font.Font(family="Arial", size=12)
+
 # setting the max size
 win.maxsize(win.winfo_screenheight(), win.winfo_screenwidth())
 
@@ -20,8 +24,7 @@ win.maxsize(win.winfo_screenheight(), win.winfo_screenwidth())
 win.minsize(500, 500)
 
 # for the find
-find_font = tkinter.font.Font(family="Arial",
-                              size=12)
+find_font = tkinter.font.Font(family="Arial", size=12)
 e = tkinter.StringVar()
 x = tkinter.Entry(textvariable=e, font=find_font)
 y = tkinter.Label(text="Find")
@@ -32,16 +35,22 @@ win.title("Bhola editor")
 # declaring an icon
 icon = tkinter.PhotoImage(file="Imgs/main_ico.png")
 sidebar.show()
+
 # setting the icon img as the icon
 win.iconphoto(True, icon)
+
 # adding the menu
 menubar.menu(win)
 
 # adding the main writing space
-text = tkinter.Text(win, font=font, bg=BACKGROUND, fg=FOREGROUND, insertbackground=FOREGROUND)
+text = tkinter.Text(win, font=font, bg=BACKGROUND, fg=FOREGROUND, insertbackground=FOREGROUND, borderwidth=0,
+                    highlightthickness=0)
 text.pack(expand=True, side=tkinter.TOP, fill=tkinter.BOTH)
 text.focus_set()  # sets the cursor at the writing space
+text.tag_configure("misspelled", foreground="red", underline=True)
 
+
+# adding syntax highlighting
 
 # saving logic
 def save_as(event):
@@ -115,6 +124,19 @@ def on_find(event):
     x.bind("<Escape>", destroy)
 
 
+def Spellcheck(event):
+    index = text.search(r'\s', "insert", backwards=True, regexp=True)
+    if index == "":
+        index = "1.0"
+    else:
+        index = text.index("%s+1c" % index)
+    word = text.get(index, "insert")
+    if word in ENG_WORDS:
+        text.tag_remove("misspelled", index, "%s+%dc" % (index, len(word)))
+    else:
+        text.tag_add("misspelled", index, "%s+%dc" % (index, len(word)))
+
+
 Scroll = tkinter.Scrollbar(text)
 Scroll.pack(side=tkinter.RIGHT, fill=tkinter.Y)
 Scroll.config(command=text.yview)
@@ -124,10 +146,12 @@ text.config(yscrollcommand=Scroll.set)
 win.bind("<Control-s>", save_as)
 win.bind("<Control-o>", _open_file)
 win.bind("<Control-Shift-O>", _open_folder)
-win.bind("<Button-4>", change_font_size)
-win.bind("<Button-5>", change_font_size)
-win.bind("<Control-MouseWheel>", change_font_size)
+if sys.platform.startswith("linux"):
+    win.bind("<Button-4>", change_font_size)
+    win.bind("<Button-5>", change_font_size)
+else:
+    win.bind("<Control-MouseWheel>", change_font_size)
 win.bind("<Control-f>", on_find)
-
+text.bind("<space>", Spellcheck)
 # the main thing
 win.mainloop()
