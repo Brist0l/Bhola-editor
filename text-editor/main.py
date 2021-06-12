@@ -9,7 +9,9 @@ import sys
 # static variables
 BACKGROUND = "#333333"
 FOREGROUND = "#E9F0F2"
-ENG_WORDS = open("american-english").read().split("\n")
+KEYWORD = "#FE5900"
+# ENG_WORDS = open("word-lists/american-english.txt").read().split("\n")
+KEYWORDS = open("word-lists/keywords").read().split("\n")
 
 # creating the main window
 win = tkinter.Tk()
@@ -47,10 +49,9 @@ text = tkinter.Text(win, font=font, bg=BACKGROUND, fg=FOREGROUND, insertbackgrou
                     highlightthickness=0)
 text.pack(expand=True, side=tkinter.TOP, fill=tkinter.BOTH)
 text.focus_set()  # sets the cursor at the writing space
-text.tag_configure("misspelled", foreground="red", underline=True)
+# text.tag_configure("misspelled", foreground=MISSPELLED, underline=True)
+text.tag_configure("highlight", foreground="blue", underline=False)
 
-
-# adding syntax highlighting
 
 # saving logic
 def save_as(event):
@@ -124,17 +125,17 @@ def on_find(event):
     x.bind("<Escape>", destroy)
 
 
-def Spellcheck(event):
+def Syntaxhighlight(event):
     index = text.search(r'\s', "insert", backwards=True, regexp=True)
     if index == "":
         index = "1.0"
     else:
         index = text.index("%s+1c" % index)
     word = text.get(index, "insert")
-    if word in ENG_WORDS:
-        text.tag_remove("misspelled", index, "%s+%dc" % (index, len(word)))
+    if word in KEYWORDS:
+        text.tag_remove("highlight", index, "%s+%dc" % (index, len(word)))
     else:
-        text.tag_add("misspelled", index, "%s+%dc" % (index, len(word)))
+        text.tag_add("highlight", index, "%s+%dc" % (index, len(word)))
 
 
 Scroll = tkinter.Scrollbar(text)
@@ -152,6 +153,7 @@ if sys.platform.startswith("linux"):
 else:
     win.bind("<Control-MouseWheel>", change_font_size)
 win.bind("<Control-f>", on_find)
-text.bind("<space>", Spellcheck)
+# text.bind("<space>", Spellcheck)
+text.bind("<space>", Syntaxhighlight)
 # the main thing
 win.mainloop()
