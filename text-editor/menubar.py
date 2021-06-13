@@ -21,12 +21,14 @@ def menu(win):
         edit = tkinter.Menu(menu_, tearoff=0)
         menu_.add_cascade(label='Edit', menu=edit)
         edit.add_command(label='cut', command=menubaroptions._cut)
+        edit.add_command(label="Undo",command=menubaroptions._undo)
+        edit.add_command(label="Redo",command=menubaroptions._redo)
         edit.add_command(label='copy', command=menubaroptions._copy)
         edit.add_command(label='Paste', command=menubaroptions._paste)
         edit.add_command(label='Select All', command=menubaroptions._select_all)
         edit.add_separator()
         edit.add_command(label='Find...',accelerator="Ctrl+F", command=None)
-        # edit.add_command(label='Find and replace',command=None)
+        edit.add_command(label='Find and replace',command=None)
 
     def _help():
         help_ = tkinter.Menu(menu_, tearoff=0)
