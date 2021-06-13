@@ -9,7 +9,7 @@ import sys
 # static variables
 BACKGROUND = "#333333"
 FOREGROUND = "#E9F0F2"
-KEYWORD = "#FE5900"
+KEYWORD = "#FEB801"
 # ENG_WORDS = open("word-lists/american-english.txt").read().split("\n")
 KEYWORDS = open("word-lists/keywords").read().split("\n")
 
@@ -50,20 +50,21 @@ text = tkinter.Text(win, font=font, bg=BACKGROUND, fg=FOREGROUND, insertbackgrou
 text.pack(expand=True, side=tkinter.TOP, fill=tkinter.BOTH)
 text.focus_set()  # sets the cursor at the writing space
 # text.tag_configure("misspelled", foreground=MISSPELLED, underline=True)
-text.tag_configure("highlight", foreground="blue", underline=False)
+text.tag_configure("highlight", foreground=KEYWORD, underline=False)
 
 
 # saving logic
 def save_as(event):
     global text
-    t = text.get("1.0", "end-1c")
-    save_location = tkinter.filedialog.asksaveasfile()
+    files = [('Python Files', '*.py')]
+    t = text.get("1.0", tkinter.END)
+    save_location = tkinter.filedialog.asksaveasfile(filetypes=files)
     try:
-        file1 = open(save_location, "w+")
-        file1.write(t)
-        file1.close()
-    except TypeError:
-        pass
+        with open(save_location.name, "r+") as file1:file1.write(t)
+    except TypeError as e:
+        errorwin = tkinter.Toplevel()
+        errorlabel = tkinter.Label(errorwin,text=e,font=find_font)
+        errorlabel.pack()
 
 
 def _open_file(event):
@@ -133,9 +134,9 @@ def Syntaxhighlight(event):
         index = text.index("%s+1c" % index)
     word = text.get(index, "insert")
     if word in KEYWORDS:
-        text.tag_remove("highlight", index, "%s+%dc" % (index, len(word)))
-    else:
         text.tag_add("highlight", index, "%s+%dc" % (index, len(word)))
+    else:
+        text.tag_remove("highlight", index, "%s+%dc" % (index, len(word)))
 
 
 Scroll = tkinter.Scrollbar(text)
@@ -148,12 +149,12 @@ win.bind("<Control-s>", save_as)
 win.bind("<Control-o>", _open_file)
 win.bind("<Control-Shift-O>", _open_folder)
 if sys.platform.startswith("linux"):
-    win.bind("<Button-4>", change_font_size)
-    win.bind("<Button-5>", change_font_size)
+    win.bind("<Control-Button-4>", change_font_size)
+    win.bind("<Control-Button-5>", change_font_size)
 else:
     win.bind("<Control-MouseWheel>", change_font_size)
 win.bind("<Control-f>", on_find)
-# text.bind("<space>", Spellcheck)
-text.bind("<space>", Syntaxhighlight)
+text.bind("<Key>", Syntaxhighlight)
+
 # the main thing
 win.mainloop()
