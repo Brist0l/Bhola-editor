@@ -28,7 +28,7 @@ def menu(win):
         edit.add_command(label='Select All', command=menubaroptions._select_all)
         edit.add_separator()
         edit.add_command(label='Find...',accelerator="Ctrl+F", command=None)
-        edit.add_command(label='Find and replace',command=None)
+        # edit.add_command(label='Find and replace',command=None)
 
     def _help():
         help_ = tkinter.Menu(menu_, tearoff=0)
