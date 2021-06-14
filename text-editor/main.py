@@ -1,4 +1,5 @@
 import tkinter
+from tkinter import *
 import tkinter.filedialog
 import menubar
 import sidebar
@@ -46,7 +47,7 @@ menubar.menu(win)
 
 # adding the main writing space
 text = tkinter.Text(win, font=font, bg=BACKGROUND, fg=FOREGROUND, insertbackground=FOREGROUND, borderwidth=0,
-                    highlightthickness=0)
+                    highlightthickness=0,undo=True)
 text.pack(expand=True, side=tkinter.TOP, fill=tkinter.BOTH)
 text.focus_set()  # sets the cursor at the writing space
 # text.tag_configure("misspelled", foreground=MISSPELLED, underline=True)
@@ -59,12 +60,13 @@ def save_as(event):
     files = [('Python Files', '*.py')]
     t = text.get("1.0", tkinter.END)
     save_location = tkinter.filedialog.asksaveasfile(filetypes=files)
-    try:
-        with open(save_location.name, "r+") as file1:file1.write(t)
-    except TypeError as e:
-        errorwin = tkinter.Toplevel()
-        errorlabel = tkinter.Label(errorwin,text=e,font=find_font)
-        errorlabel.pack()
+    if save_location != None:
+        try:
+            with open(save_location.name, "r+") as file1:file1.write(t)
+        except TypeError as e:
+            errorwin = tkinter.Toplevel()
+            errorlabel = tkinter.Label(errorwin,text=e,font=find_font)
+            errorlabel.pack()
 
 
 def _open_file(event):
@@ -144,8 +146,16 @@ Scroll.pack(side=tkinter.RIGHT, fill=tkinter.Y)
 Scroll.config(command=text.yview)
 text.config(yscrollcommand=Scroll.set)
 
+def undo(event):
+    global text
+    text.edit_undo
+def redo(event):
+    global text
+    text.edit_redo
 # adding keybindings
 win.bind("<Control-s>", save_as)
+win.bind("<Control-z>", undo)
+win.bind("<Control-y>", redo)
 win.bind("<Control-o>", _open_file)
 win.bind("<Control-Shift-O>", _open_folder)
 if sys.platform.startswith("linux"):
