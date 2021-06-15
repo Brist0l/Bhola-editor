@@ -6,6 +6,7 @@ import sidebar
 import hierarchical
 import tkinter.font
 import sys
+import subprocess
 
 # static variables
 BACKGROUND = "#333333"
@@ -45,13 +46,17 @@ win.iconphoto(True, icon)
 # adding the menu
 menubar.menu(win)
 
+fileName = ""
 # adding the main writing space
 text = tkinter.Text(win, font=font, bg=BACKGROUND, fg=FOREGROUND, insertbackground=FOREGROUND, borderwidth=0,
                     highlightthickness=0,undo=True)
+output = Text(win,height=10)
 text.pack(expand=True, side=tkinter.TOP, fill=tkinter.BOTH)
+output.pack()
 text.focus_set()  # sets the cursor at the writing space
 # text.tag_configure("misspelled", foreground=MISSPELLED, underline=True)
 text.tag_configure("highlight", foreground=KEYWORD, underline=False)
+
 
 
 # saving logic
@@ -70,8 +75,9 @@ def save_as(event):
 
 
 def _open_file(event):
-    global file
+    global file,filename
     file = tkinter.filedialog.askopenfilename()
+    filename = file
     if file == "":
         file = None
     else:
@@ -152,10 +158,24 @@ def undo(event):
 def redo(event):
     global text
     text.edit_redo
+def new(event):
+    text.delete(1.0, END)
+
+def run(event):
+    # code2run = text.get("1.0",END)
+    # exec(code2run)
+    command = f"python {filename}"
+    pro = subprocess.Popen(command,stdout=subprocess.PIPE,stderr=subprocess.PIPE,shell=True)
+    out, error = pro.communicate()
+    output.insert('1.0',out)
+
 # adding keybindings
 win.bind("<Control-s>", save_as)
 win.bind("<Control-z>", undo)
 win.bind("<Control-y>", redo)
+win.bind("<Control-s>", save_as)
+win.bind("<Control-n>", new)
+win.bind("<Control-r>", run)
 win.bind("<Control-o>", _open_file)
 win.bind("<Control-Shift-O>", _open_folder)
 if sys.platform.startswith("linux"):

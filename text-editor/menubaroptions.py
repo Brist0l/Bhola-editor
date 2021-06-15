@@ -17,7 +17,7 @@ def _save():
 
 
 def _new():
-    pass
+    keyboard.press_and_release("ctrl+n")
 
 
 def _paste():
@@ -44,6 +44,8 @@ def _redo():
 def _about():
     webbrowser.open("https://github.com/mrHola21/Bhola-editor", new=2)
 
+def _run():
+    keyboard.press_and_release("ctrl+r")
 # def _find(win,text):
 #     search_list = list()
 #     s = ""

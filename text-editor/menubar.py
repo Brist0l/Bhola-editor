@@ -10,7 +10,7 @@ def menu(win):
     def file():
         file_ = tkinter.Menu(menu_, tearoff=0)
         menu_.add_cascade(label="File", menu=file_)
-        file_.add_command(label='New File', accelerator="Ctrl+N", compound=tkinter.LEFT, command=None)
+        file_.add_command(label='New File', accelerator="Ctrl+N", compound=tkinter.LEFT, command=menubaroptions._new)
         file_.add_command(label='Open', accelerator="Ctrl+O", command=menubaroptions._open)
         file_.add_command(label='Setting', accelerator="Ctrl+Alt+S", command=Setting.run)
         file_.add_command(label="Save", command=menubaroptions._save)
@@ -46,6 +46,7 @@ def menu(win):
         tools_ = tkinter.Menu(menu_, tearoff=0)
         menu_.add_cascade(label="Tools", menu=tools_)
         tools_.add_command(label="Install package", command=pip.run)
+        tools_.add_command(label="Run",command=menubaroptions._run)
 
     file()
     edit()
